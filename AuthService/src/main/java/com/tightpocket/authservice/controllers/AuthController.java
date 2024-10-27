@@ -27,7 +27,7 @@ public class AuthController {
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
 
-    @PostMapping("/auth/v1/register")
+    @PostMapping("auth/v1/register")
     public ResponseEntity register(@RequestBody UserInfoDTO userInfoDTO) {
         try {
             Boolean isRegistered = userDetailsServiceImpl.registerUser(userInfoDTO);
