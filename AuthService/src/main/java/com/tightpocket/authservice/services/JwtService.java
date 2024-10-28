@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class JwtService {
 
     //have to change further and keep in .env
-    public static final String SECRET = "2AE87BFD837F541F47FAE9E3268A1";
+    public static final String SECRET = "SDFG4569H7956GHFS45SG4H57FD96784547563483646823468I4579856";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -47,7 +47,7 @@ public class JwtService {
         return createToken(claims, username);
     }
 
-    public String createToken(Map<String, Object> claims, String username) {
+    private String createToken(Map<String, Object> claims, String username) {
         return Jwts
                 .builder()
                 .setClaims(claims)
