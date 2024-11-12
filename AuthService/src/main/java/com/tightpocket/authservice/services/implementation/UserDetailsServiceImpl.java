@@ -1,6 +1,7 @@
 package com.tightpocket.authservice.services.implementation;
 
 import com.tightpocket.authservice.entities.UserInfo;
+import com.tightpocket.authservice.eventProducer.UserInfoProducer;
 import com.tightpocket.authservice.models.UserInfoDTO;
 import com.tightpocket.authservice.repositories.UserRepo;
 import com.tightpocket.authservice.services.CustomUserDetailsService;
@@ -28,6 +29,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private final UserInfoProducer userInfoProducer;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserInfo user = userRepo.findByUsername(username);
@@ -49,6 +53,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         String userId = UUID.randomUUID().toString();
         userRepo.save(new UserInfo(userId, userInfoDTO.getUsername(), userInfoDTO.getPassword(), new HashSet<>()));
+
+        //push event to queue
+        userInfoProducer.sendEventToKafka(userInfoDTO);
+
         return true;
     }
 
